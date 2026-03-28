@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Face Analytics Dashboard</title>
+    <!-- Modern Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="glass-panel">
+            <h1><i class="fa-solid fa-microchip"></i> AI Face Analytics Engine</h1>
+            <div class="status-indicator">
+                <span class="dot pulse"></span>
+                <span>System Online</span>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main class="content-grid">
+            
+            <!-- Left Sidebar Controls -->
+            <aside class="controls-panel glass-panel">
+                <h2><i class="fa-solid fa-sliders"></i> Tools Menu</h2>
+                
+                <div class="control-group">
+                    <label class="switch-container">
+                        <span class="label-text">Face Mesh Overlay</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-mesh" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </label>
+                    <p class="description">Visualizes 468 AI facial landmarks.</p>
+                </div>
+
+                <div class="control-group">
+                    <label class="switch-container">
+                        <span class="label-text">Face Cursor Control</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-cursor">
+                            <span class="slider round"></span>
+                        </label>
+                    </label>
+                    <p class="description">Move mouse with nose. Blink to click. <br><span class="warning">⚠️ Beta Feature</span></p>
+                </div>
+            </aside>
+
+            <!-- Center Video Feed -->
+            <section class="video-panel glass-panel">
+                <div class="video-container">
+                    <img src="{{ url_for('video_feed') }}" alt="Live Feed" id="video-stream">
+                    <div class="overlay-hud">
+                        <div class="hud-top-left">REC</div>
+                        <div class="hud-bottom-right" id="fps-hud">FPS: --</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Telemetry Panel -->
+            <aside class="telemetry-panel glass-panel">
+                <h2><i class="fa-solid fa-chart-line"></i> Live Telemetry</h2>
+                
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-face-smile"></i></div>
+                    <div class="stat-info">
+                        <h3>Current Emotion</h3>
+                        <p id="stat-emotion" class="highlight">Analyzing...</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3>Faces Detected</h3>
+                        <p id="stat-facecount">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-eye"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Blinks</h3>
+                        <p id="stat-blinks">0</p>
+                    </div>
+                </div>
+                
+            </aside>
+        </main>
+        
+        <footer class="glass-panel">
+            <p>Level 10 Upgrade 🚀 | Powered by OpenCV, MediaPipe & Flask</p>
+        </footer>
+    </div>
+    
+    <script src="/static/main.js"></script>
+</body>
+</html>
