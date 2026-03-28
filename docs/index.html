@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Mesh Verification | DevOS</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A state-of-the-art 3D Face Mesh Verification System utilizing MediaPipe and advanced Euclidean distance heuristics for real-time facial analysis.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MediaPipe Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background Effects -->
+    <div class="background-aurora"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- DevOS Unified Header -->
+    <nav class="devos-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-microchip glow-icon"></i>
+            <span>DevOS <span class="accent-text">Vision</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#overview">Overview</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#simulation" class="nav-btn primary-btn">Try Simulation</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="overview" class="hero-section glass-panel">
+            <div class="hero-content">
+                <div class="badge">v2.0 Beta Engine</div>
+                <h1 class="hero-title">Real-Time <br> <span class="accent-gradient">Face Mesh</span> Verification</h1>
+                <p class="hero-subtitle">High-fidelity 3D facial mapping using 468 precise landmarks to calculate Euclidean distances and authenticate subject geometry with extreme precision.</p>
+                <div class="hero-actions">
+                    <a href="#simulation" class="btn btn-glow"><i class="fa-solid fa-play"></i> Launch Simulation</a>
+                    <a href="https://github.com/RishvinReddy/Face-Mesh-Verification-System" target="_blank" class="btn btn-outline"><i class="fa-brands fa-github"></i> View Repository</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="mesh-graphic">
+                    <div class="scan-line"></div>
+                    <i class="fa-solid fa-user-astronaut"></i>
+                    <div class="points-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture Flow -->
+        <section id="architecture" class="architecture-section">
+            <h2 class="section-title">System Architecture</h2>
+            <div class="flow-container">
+                <div class="flow-node glass-panel">
+                    <div class="node-icon"><i class="fa-solid fa-camera"></i></div>
+                    <h3>1. Capture</h3>
+                    <p>Real-time frame extraction.</p>
+                </div>
+                <div class="flow-connector"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="flow-node glass-panel">
+                    <div class="node-icon"><i class="fa-solid fa-face-viewfinder"></i></div>
+                    <h3>2. Detect</h3>
+                    <p>Face bounding and cropping.</p>
+                </div>
+                <div class="flow-connector"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="flow-node glass-panel active-node">
+                    <div class="node-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3>3. Mesh Generation</h3>
+                    <p>468 3D mapping points.</p>
+                </div>
+                <div class="flow-connector"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="flow-node glass-panel">
+                    <div class="node-icon"><i class="fa-solid fa-ruler-combined"></i></div>
+                    <h3>4. Heuristics</h3>
+                    <p>Euclidean distance scaling.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Simulation Section -->
+        <section id="simulation" class="simulation-section glass-panel">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-terminal glow-icon"></i> Live Simulation Engine</h2>
+                <p>Allow camera access to test the advanced facial recognition capabilities directly in your browser. Powered by MediaPipe JS capabilities without requiring the backend.</p>
+            </div>
+            
+            <div class="sim-container">
+                <div class="video-wrapper">
+                    <div id="loader" class="loader">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> Initializing Neural Engine...
+                    </div>
+                    <!-- Hidden video element to read stream -->
+                    <video id="input_video" style="display: none;" playsinline></video>
+                    <!-- Canvas for rendering output -->
+                    <canvas id="output_canvas" width="640" height="480"></canvas>
+                    
+                    <div class="sim-overlay">
+                        <div class="status-indicator">
+                            <span class="dot live"></span> Live Feed
+                        </div>
+                        <div class="hud-stats">
+                            <div class="stat"><span class="label">Points</span> <span class="value" id="points-count">0</span></div>
+                            <div class="stat"><span class="label">FPS</span> <span class="value" id="fps-count">0</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sim-controls">
+                    <button id="startBtn" class="btn btn-glow"><i class="fa-solid fa-power-off"></i> Start Engine</button>
+                    <div class="terminal-box">
+                        <div class="terminal-header">sys_log.out</div>
+                        <div class="terminal-body" id="terminal-logs">
+                            <p>> DevOS Terminal [Version 2.0]</p>
+                            <p>> Awaiting initialization...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DevOS Footer -->
+    <footer class="devos-footer glass-panel">
+        <p>Built with <i class="fa-solid fa-heart"" style="color: #ff3366;"></i> by DevOS framework.</p>
+        <p class="muted">Code available on GitHub. Hosted on GitHub Pages.</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script src="script.js"></script>
+</body>
+</html>
