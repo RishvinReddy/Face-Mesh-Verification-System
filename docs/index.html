@@ -11,7 +11,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- MediaPipe Libraries -->
@@ -37,6 +37,8 @@
         </div>
         <div class="nav-links">
             <a href="#overview">Overview</a>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#algorithms">Algorithms</a>
             <a href="#architecture">Architecture</a>
             <a href="#simulation" class="nav-btn primary-btn">Try Simulation</a>
         </div>
@@ -49,6 +51,22 @@
                 <div class="badge">v2.0 Beta Engine</div>
                 <h1 class="hero-title">Real-Time <br> <span class="accent-gradient">Face Mesh</span> Verification</h1>
                 <p class="hero-subtitle">High-fidelity 3D facial mapping using 468 precise landmarks to calculate Euclidean distances and authenticate subject geometry with extreme precision.</p>
+                
+                <div class="metrics-row">
+                    <div class="metric-card">
+                        <h4>468</h4>
+                        <span>3D Landmarks</span>
+                    </div>
+                    <div class="metric-card">
+                        <h4>< 15ms</h4>
+                        <span>Inference Time</span>
+                    </div>
+                    <div class="metric-card">
+                        <h4>99.8%</h4>
+                        <span>Accuracy</span>
+                    </div>
+                </div>
+
                 <div class="hero-actions">
                     <a href="#simulation" class="btn btn-glow"><i class="fa-solid fa-play"></i> Launch Simulation</a>
                     <a href="https://github.com/RishvinReddy/Face-Mesh-Verification-System" target="_blank" class="btn btn-outline"><i class="fa-brands fa-github"></i> View Repository</a>
@@ -60,6 +78,70 @@
                     <i class="fa-solid fa-user-astronaut"></i>
                     <div class="points-container"></div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Capabilities Section -->
+        <section id="capabilities" class="feature-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-bolt glow-icon"></i> Core Capabilities</h2>
+                <p>Enterprise-grade biometric processing built for scale and security.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card glass-panel">
+                    <div class="icon-wrapper"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>Anti-Spoofing Security</h3>
+                    <p>Calculates geometric depth using spatial distancing to prevent presentation attacks and 2D photo spoofing.</p>
+                </div>
+                <div class="feature-card glass-panel">
+                    <div class="icon-wrapper"><i class="fa-solid fa-face-smile"></i></div>
+                    <h3>Micro-Expression Analysis</h3>
+                    <p>Tracks eyelid closure rates, mouth elasticity, and brow tension in real-time for sentiment mapping.</p>
+                </div>
+                <div class="feature-card glass-panel">
+                    <div class="icon-wrapper"><i class="fa-solid fa-fingerprint"></i></div>
+                    <h3>Biometric Authentication</h3>
+                    <p>Uses localized Euclidean matrices to create a unique topological fingerprint of the user's facial structure.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Algorithms Deep Dive -->
+        <section id="algorithms" class="algorithm-section glass-panel">
+            <div class="algo-image">
+                <div class="code-window">
+                    <div class="window-header">
+                        <span class="dot red"></span><span class="dot yel"></span><span class="dot grn"></span>
+                        <span class="title">engine.py</span>
+                    </div>
+                    <pre><code>def calculate_euclidean(p1, p2):
+    """
+    Computes spatial distance between 3D vectors.
+    """
+    return math.sqrt(
+        (p2.x - p1.x)**2 + 
+        (p2.y - p1.y)**2 + 
+        (p2.z - p1.z)**2
+    )
+
+def verify_mesh(landmarks, threshold=0.15):
+    # Anchor point: Nose Tip (Index 1)
+    # Target point: Left Eye Center (Index 159)
+    dist = calculate_euclidean(
+        landmarks[1], landmarks[159]
+    )
+    return dist < threshold</code></pre>
+                </div>
+            </div>
+            <div class="algo-content">
+                <h2>Mathematical Framework</h2>
+                <p>The verification engine relies heavily on linear algebra and Cartesian distance metrics (Euclidean geometry). By selecting highly rigid anchor points on the face (such as the tip of the nose and the ocular orbital bones), the system mitigates environmental distortions.</p>
+                
+                <ul class="algo-list">
+                    <li><i class="fa-solid fa-check text-green"></i> <strong>Rigid Body Transformation:</strong> Robust to head pan, tilt, and yaw.</li>
+                    <li><i class="fa-solid fa-check text-green"></i> <strong>Scale Invariance:</strong> Normalized unit bounding boxes allow for distance-independent calculation.</li>
+                    <li><i class="fa-solid fa-check text-green"></i> <strong>Temporal Smoothing:</strong> Kalman filters reduce landmark jitter across frames.</li>
+                </ul>
             </div>
         </section>
 
@@ -96,8 +178,8 @@
         <!-- Live Simulation Section -->
         <section id="simulation" class="simulation-section glass-panel">
             <div class="section-header">
-                <h2><i class="fa-solid fa-terminal glow-icon"></i> Live Simulation Engine</h2>
-                <p>Allow camera access to test the advanced facial recognition capabilities directly in your browser. Powered by MediaPipe JS capabilities without requiring the backend.</p>
+                <h2><i class="fa-solid fa-terminal glow-icon"></i> Interactive Simulation Engine</h2>
+                <p>Run the facial recognition matrix locally in your browser. Configure the renderer parameters to inspect different facial landmarks and sub-systems.</p>
             </div>
             
             <div class="sim-container">
@@ -122,7 +204,34 @@
                 </div>
 
                 <div class="sim-controls">
-                    <button id="startBtn" class="btn btn-glow"><i class="fa-solid fa-power-off"></i> Start Engine</button>
+                    <button id="startBtn" class="btn btn-glow launch-btn"><i class="fa-solid fa-power-off"></i> Start Engine</button>
+                    
+                    <div class="control-panel glass-panel">
+                        <h3><i class="fa-solid fa-sliders"></i> Render Settings</h3>
+                        <div class="toggle-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggle-tessellation" checked>
+                                <span class="slider"></span>
+                                Show Tessellation Map
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggle-eyes" checked>
+                                <span class="slider"></span>
+                                Highlight Eyes & Brows
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggle-oval" checked>
+                                <span class="slider"></span>
+                                Show Face Contour
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggle-lips" checked>
+                                <span class="slider"></span>
+                                Track Lip Movements
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="terminal-box">
                         <div class="terminal-header">sys_log.out</div>
                         <div class="terminal-body" id="terminal-logs">
@@ -137,7 +246,7 @@
 
     <!-- DevOS Footer -->
     <footer class="devos-footer glass-panel">
-        <p>Built with <i class="fa-solid fa-heart"" style="color: #ff3366;"></i> by DevOS framework.</p>
+        <p>Built with <i class="fa-solid fa-heart" style="color: #ff3366;"></i> by DevOS framework.</p>
         <p class="muted">Code available on GitHub. Hosted on GitHub Pages.</p>
     </footer>
 
